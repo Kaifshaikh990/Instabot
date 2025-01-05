@@ -26,12 +26,13 @@ except Exception as e:
 processed_message_ids = set()
 
 # Function to process group messages
-def process_group_message(message, thread_id):
+def process_group_message(message, thread_id, user):
     try:
         if "/percentages" in message.lower():
+            # Generate random whole percentages
             percentage1 = random.randint(0, 100)
             percentage2 = random.randint(0, 100)
-            response = f"Here are your random percentages:\n1. {percentage1}%\n2. {percentage2}%"
+            response = f"Here are your random percentages, {user}:\n1. {percentage1}%\n2. {percentage2}%"
             cl.direct_send(response, thread_ids=[thread_id])
         elif "/help" in message.lower():
             response = "Available commands:\n/percentages - Get two random percentages\n/help - Show this message"
@@ -53,8 +54,9 @@ try:
                 for message in messages:
                     # Process only unread messages
                     if message.id not in processed_message_ids:
-                        print(f"New message in group (ID: {thread.id}): {message.text}")
-                        process_group_message(message.text, thread.id)
+                        username = message.user.username  # Get the username of the sender
+                        print(f"New message from {username} in group (ID: {thread.id}): {message.text}")
+                        process_group_message(message.text, thread.id, username)
                         # Mark this message as processed
                         processed_message_ids.add(message.id)
 
