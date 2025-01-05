@@ -26,13 +26,18 @@ except Exception as e:
 processed_message_ids = set()
 
 # Function to process group messages
-def process_group_message(message, thread_id, user):
+def process_group_message(message, thread_id, user_id):
     try:
+        # Fetch user details using user_id
+        user = cl.user_info(user_id)
+        username = user.username  # Get the username of the sender
+        
         if "/percentages" in message.lower():
-            # Generate random whole percentages
+            # Generate the first random percentage
             percentage1 = random.randint(0, 100)
-            percentage2 = random.randint(0, 100)
-            response = f"Here are your random percentages, {user}:\n1. {percentage1}%\n2. {percentage2}%"
+            # Calculate the second percentage as the remaining value
+            percentage2 = 100 - percentage1
+            response = f"Here are your random percentages, {username}:\n1. {percentage1}%\n2. {percentage2}%"
             cl.direct_send(response, thread_ids=[thread_id])
         elif "/help" in message.lower():
             response = "Available commands:\n/percentages - Get two random percentages\n/help - Show this message"
@@ -48,15 +53,14 @@ try:
 
         for thread in threads:
             if thread.is_group:  # Only process group chats
-                # You can print the thread id or users in the group instead of 'title'
                 print(f"Processing group chat with ID: {thread.id}")
                 messages = cl.direct_messages(thread.id)
                 for message in messages:
                     # Process only unread messages
                     if message.id not in processed_message_ids:
-                        username = message.user.username  # Get the username of the sender
-                        print(f"New message from {username} in group (ID: {thread.id}): {message.text}")
-                        process_group_message(message.text, thread.id, username)
+                        user_id = message.user_id  # Get the user_id of the sender
+                        print(f"New message from user_id {user_id} in group (ID: {thread.id}): {message.text}")
+                        process_group_message(message.text, thread.id, user_id)
                         # Mark this message as processed
                         processed_message_ids.add(message.id)
 
