@@ -47,11 +47,13 @@ try:
 
         for thread in threads:
             if thread.is_group:  # Only process group chats
+                # You can print the thread id or users in the group instead of 'title'
+                print(f"Processing group chat with ID: {thread.id}")
                 messages = cl.direct_messages(thread.id)
                 for message in messages:
                     # Process only unread messages
                     if message.id not in processed_message_ids:
-                        print(f"New message in group {thread.title}: {message.text}")
+                        print(f"New message in group (ID: {thread.id}): {message.text}")
                         process_group_message(message.text, thread.id)
                         # Mark this message as processed
                         processed_message_ids.add(message.id)
