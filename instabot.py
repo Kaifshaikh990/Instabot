@@ -22,6 +22,9 @@ except Exception as e:
     print(f"Error during login: {e}")
     exit(1)
 
+# Maintain a list of processed message IDs
+processed_message_ids = set()
+
 # Function to process group messages
 def process_group_message(message, thread_id):
     try:
@@ -46,10 +49,12 @@ try:
             if thread.is_group:  # Only process group chats
                 messages = cl.direct_messages(thread.id)
                 for message in messages:
-                    if not message.seen:  # Use 'message.seen' instead of 'seen_by_me'
+                    # Process only unread messages
+                    if message.id not in processed_message_ids:
                         print(f"New message in group {thread.title}: {message.text}")
                         process_group_message(message.text, thread.id)
-                        cl.direct_mark_as_seen(thread.id)
+                        # Mark this message as processed
+                        processed_message_ids.add(message.id)
 
         time.sleep(10)
 except KeyboardInterrupt:
