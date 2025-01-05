@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-USERNAME = os.getenv("chal.chakke")
-PASSWORD = os.getenv("Kaifshaikh990")
+USERNAME = os.getenv("INSTAGRAM_USERNAME")
+PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 # Initialize the Instagram client
 cl = Client()
