@@ -69,9 +69,9 @@ try:
                     if message.id not in processed_message_ids:
                         user_id = message.user_id  # Get the user_id of the sender
                         print(f"New message from user_id {user_id} in group (ID: {thread.id}): {message.text}")
-                        
-                        # Only process messages with recognized commands
-                        if "/hizru" in message.text.lower() or "/help" in message.text.lower():
+
+                        # Filter messages with recognized commands
+                        if any(command in message.text.lower() for command in ["/hizru", "/help"]):
                             process_group_message(message.text, thread.id, user_id)
                         
                         # Mark this message as processed
