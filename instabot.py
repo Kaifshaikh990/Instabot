@@ -32,12 +32,12 @@ def process_group_message(message, thread_id, user_id):
         user = cl.user_info(user_id)
         username = user.username  # Get the username of the sender
         
-        if "/percentages" in message.lower():
+        if "/hizru" in message.lower():
             # Generate the first random percentage
             percentage1 = random.randint(0, 100)
             # Calculate the second percentage as the remaining value
             percentage2 = 100 - percentage1
-            response = f"Here are your random percentages, {username}:\n1. {percentage1}%\n2. {percentage2}%"
+            response = f"Aao dekhte hai aap kitne hizru aur chutpagal ho 😝😝, {username}:\n😝hizru:- {percentage1}%\n🍑chutpagal:- {percentage2}%"
             cl.direct_send(response, thread_ids=[thread_id])
         elif "/help" in message.lower():
             response = "Available commands:\n/percentages - Get two random percentages\n/help - Show this message"
